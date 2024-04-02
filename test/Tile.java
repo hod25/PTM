@@ -10,7 +10,14 @@ public class Tile {
         this.letter = letter;
         this.score = score;
     }
-
+    // Getter for the letter
+    public char getLetter() {
+        return letter;
+    }
+    // // Getter for the score
+    // public int getScore() {
+    //     return score;
+    // } 
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -57,9 +64,45 @@ public class Tile {
             return instance;
         }
 
-        private int getScore(char letter) {
-            // Logic to get score for each letter, you may implement it according to your game rules
-            return 1; // Default score
+        public int getScore(char letter) {
+            switch (Character.toLowerCase(letter)) {
+                case 'a':
+                case 'e':
+                case 'i':
+                case 'n':
+                case 'o':
+                case 'r':
+                case 's':
+                case 't':
+                case 'u':
+                    return 1;
+                case 'd':
+                case 'l':
+                case 'm':
+                case 'g':
+                    return 2;
+                case 'b':
+                case 'c':
+                case 'p':
+                    return 3;
+                case 'f':
+                case 'h':
+                case 'v':
+                case 'w':
+                case 'y':
+                    return 4;
+                case 'k':
+                    return 5;
+                case 'j':
+                case 'x':
+                    return 8;
+                case 'q':
+                case 'z':
+                    return 10;
+                default:
+                    return 0; // Handle characters not in the scoring system (e.g., whitespace)
+            }
+                    // return 1; // Default score
         }
 
         public Tile getRand() {
@@ -109,5 +152,7 @@ public class Tile {
             // return copy;
             return quantities.clone();
         }
+        
     }
+
 }
