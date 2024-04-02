@@ -31,6 +31,7 @@ public class Tile {
     public static class Bag {
         private static Bag instance = null;
         private int[] quantities;
+        private int[] quantitiesD;
         private Tile[] tiles;
 
         private Bag() {
@@ -38,7 +39,10 @@ public class Tile {
                     9, 2, 2, 4, 12, 2, 3, 2, 9, 1, 1, 4, 2,
                     6, 8, 2, 1, 6, 4, 6, 4, 2, 2, 1, 2, 1
             }; // Quantities for each letter A-Z
-
+            quantitiesD = new int[]{
+                9, 2, 2, 4, 12, 2, 3, 2, 9, 1, 1, 4, 2,
+                6, 8, 2, 1, 6, 4, 6, 4, 2, 2, 1, 2, 1
+        }; // Quantities for each letter A-Z
             tiles = new Tile[26];
             for (int i = 0; i < 26; i++) {
                 char letter = (char) ('A' + i);
@@ -82,8 +86,10 @@ public class Tile {
 
         public void put(Tile tile) {
             int index = tile.letter - 'A';
-            if (index >= 0 && index < 26 && quantities[index] < 9) { // Assuming max quantity is 9, change according to your rules
+            if (index >= 0 && index < 26 && quantities[index] < quantitiesD[index]) { // Assuming max quantity is 9, change according to your rules
                 quantities[index]++;
+                // System.out.println("Tile " + tile.letter + " is put back to bag");
+                // System.out.println("Quantity of " + tile.letter + " is " + quantities[index]);
             }
         }
 
@@ -96,10 +102,11 @@ public class Tile {
         }
 
         public int[] getQuantities() {
-            // int[] copy= new int[tiles.length];
-            // System.arraycopy(tiles, 0, copy, 0, tiles.length);
+            // int[] copy = new int[quantities.length];
+            // for (int i = 0; i < quantities.length; i++) {
+            //     copy[i] = quantities[i];
+            // }
             // return copy;
-            // System.out.println(quantities.clone());
             return quantities.clone();
         }
     }
