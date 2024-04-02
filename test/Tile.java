@@ -1,3 +1,5 @@
+package test;
+
 import java.util.Random;
 
 public class Tile {
@@ -94,6 +96,10 @@ public class Tile {
         }
 
         public int[] getQuantities() {
+            // int[] copy= new int[tiles.length];
+            // System.arraycopy(tiles, 0, copy, 0, tiles.length);
+            // return copy;
+            // System.out.println(quantities.clone());
             return quantities.clone();
         }
     }
