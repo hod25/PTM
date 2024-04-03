@@ -11,7 +11,7 @@ public class Board {
 
     private Board() {
         // Initialize the board with null tiles
-        tiles = new Tile[BOARD_SIZE][BOARD_SIZE];
+        tiles = new Tile[BOARD_SIZE][BOARD_SIZE]; // Board is empty at the start 
         for (Tile[] row : tiles) {
             Arrays.fill(row, null);
         }
@@ -21,7 +21,15 @@ public class Board {
     public static Board getBoard() {
         return instance;
     }
-
+    
+    // public static Board SetBoard() {
+    //     if (instance == null) {
+    //         tiles[]
+    //         return instance;
+            
+    //     }
+    //     return 1;
+    
     // Return a copy of the tiles array
     public Tile[][] getTiles() {
         Tile[][] copy = new Tile[BOARD_SIZE][BOARD_SIZE];
@@ -68,25 +76,25 @@ public class Board {
     // Calculate the total score of the word, including bonuses
     public int getScore(Word word) {
         // Implement logic to calculate the score based on word placement
-        // Tile[] tiles = word.getTiles();
-        // int score = 0;
+        Tile[] tiles = word.getTiles();
+        int score = 0;
     
-        // for (Tile tile : tiles) {
-        //     char letter = tile.getLetter();
-        //     int letterScore = tile.getScore(letter); // Get score for the letter
+        for (Tile tile : tiles) {
+            char letter = tile.getLetter();
+            int letterScore = tile.getScore(letter); // Get score for the letter
             
-        //     // Apply any bonus multiplier based on tile position
-        //     int row = word.getRow();
-        //     int col = word.getCol();
-        //     int multiplier = getTileMultiplier(row, col);
+            // Apply any bonus multiplier based on tile position
+            int row = word.getRow();
+            int col = word.getCol();
+            int multiplier = getTileMultiplier(row, col);
     
-        //     // Add letter score multiplied by bonus to total score
-        //     score += letterScore * multiplier;
-        // }
+            // Add letter score multiplied by bonus to total score
+            score += letterScore * multiplier;
+        }
     
-        // return score;
+        return score;
     
-        return 0; // Placeholder, replace with actual logic
+        // return 0; // Placeholder, replace with actual logic
         
     }
     
@@ -139,25 +147,68 @@ public class Board {
             return true;
         }
         else
-            return false; // Placeholder, replace with actual logic
+            return false;
     }
     
     
 
     private boolean restsOnExistingTiles(Word word) {
-        // Implement logic to check if the word rests on existing tiles
-        //---------
-        // if () {
+        Tile[][] currentTiles = getTiles(); // Get the current state of the board
         
-        // }
-        return false; // Placeholder, replace with actual logic
+        boolean isFirstWord = true; // Assume it's the first word unless proven otherwise
+        for (Tile[] row : currentTiles) {
+            for (Tile tile : row) {
+                if (tile != null) {
+                    isFirstWord = false; // If there's at least one non-null tile, it's not the first word
+                    break;
+                }
+            }
+            if (!isFirstWord) {
+                break;
+            }
+        }
+        
+        if (isFirstWord) {
+            // Check if the word passes through the center tile (8,8)
+            int row = word.getRow();
+            int col = word.getCol();
+            if (row == 7 && col == 7) {
+                return true; // The first word passes through the center tile
+            } else {
+                return false; // The first word does not pass through the center tile
+            }
+        } else {
+            // Check if the word rests on existing tiles
+            boolean restsOnExisting = false;
+            Tile[] tiles = word.getTiles();
+            for (Tile tile : tiles) {
+                int row = word.getRow();
+                int col = word.getCol();
+                if (currentTiles[row][col] != null) {
+                    restsOnExisting = true;
+                    break;
+                }
+            }
+            return restsOnExisting;
+        }
     }
+    
 
-    private boolean requiresReplacement(Word word) {
-        // Implement logic to check if the word requires replacement of existing tiles
-        //---------
-        return false; // Placeholder, replace with actual logic
+   private boolean requiresReplacement(Word word) {
+    Tile[][] currentTiles = getTiles(); // Get the current state of the board
+
+    // Check if any tile of the word overlaps with an existing tile
+    Tile[] tiles = word.getTiles();
+    for (Tile tile : tiles) {
+        int row = tile.getRow();
+        int col = tile.getCol();
+        if (currentTiles[row][col] != null) {
+            return true; // If the tile overlaps with an existing tile, replacement is required
+        }
     }
+    return false; // If no overlap is found, no replacement is required
+}
+
     public int tryPlaceWord(Word word) {
         if (!boardLegal(word)) {
             return -1; // Word placement is not legal
@@ -171,9 +222,32 @@ public class Board {
         int score = getScore(word);
         System.out.println(score);
         // Place the word on the board (implementation details depend on your game logic)
-    
+        placeWord(word);
         return score;
     }
     
-    
+    // Method to place the word on the board
+private boolean placeWord(Word word) {
+    Tile[][] currentTiles = getTiles(); // Get the current state of the board
+    Tile[] wordTiles = word.getTiles(); // Get the tiles of the word
+    int row = word.getRow(); // Get the starting row of the word
+    int col = word.getCol(); // Get the starting column of the word
+    boolean isVertical = word.isVertical(); // Check if the word is vertical
+
+    for (Tile tile : wordTiles) {
+        // Place the tile on the board
+        currentTiles[row][col] = tile;
+
+        // Move to the next position based on whether the word is vertical or horizontal
+        if (isVertical) {
+            row++;
+        } else {
+            col++;
+        }
+    }
+
+    // Update the board with the placed word
+    this.tiles = currentTiles;
+    return true;
+}
 }
