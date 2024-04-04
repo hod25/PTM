@@ -1,8 +1,6 @@
 package test;
-
 import java.util.Arrays;
 import java.util.Objects;
-
 public class Word {
     private final Tile[] tiles;
     private final int row;
@@ -18,21 +16,13 @@ public class Word {
     }
 
     // Getters
-    public Tile[] getTiles() {
-        return tiles;
-    }
+    public Tile[] getTiles() { return tiles;}
 
-    public int getRow() {
-        return row;
-    }
+    public int getRow() { return row;}
 
-    public int getCol() {
-        return col;
-    }
+    public int getCol() { return col;}
 
-    public boolean isVertical() {
-        return vertical;
-    }
+    public boolean isVertical() { return vertical;}
 
     // Equals method
     @Override
