@@ -181,7 +181,41 @@ public class Board {
             return 1; // No Bonus
         }
     }
-
+    public int tryPlaceWord(Word word) {
+        if (!boardLegal(word)) 
+            boardIsEmpty = false;
+            if (word.isVertical()){ 
+            int j=word.getCol();
+            for (int i=word.getRow(); i<word.getTiles().length+word.tiles.length; i++){
+                if (tiles[i][j]==null){ 
+                    tiles[i][j]=word.tiles[i-word.getTiles().length];
+                }
+            }
+            }
+            else{
+                int i=word.getRow();
+                for (int j=word.getCol(); j<word.getCol()+word.tiles.length; j++){
+                    if (tiles[i][j]==null){
+                        tiles[i][j]=word.tiles[j-word.getCol()];
+                    }
+                }
+                
+            }
+            return -1; // Word placement is not legal
+        }
+    // }
+        // if (!dictionaryLegal(word)) {
+        //     return -1; // Word is not legal according to the dictionary
+        // }
+    
+        // // Calculate the score for the word placement
+        // int score = getScore(word);
+        // System.out.println(score);
+        // // Place the word on the board (implementation details depend on your game logic)
+        // placeWord(word);
+        // return score;
+    // }
+    
     // private boolean isInsideBoard(Word word) {
     //     int row = word.getRow();
     //     int col = word.getCol();
@@ -273,41 +307,7 @@ public class Board {
     //     return false; // If no overlap is found, no replacement is required
     // }
 
-    public int tryPlaceWord(Word word) {
-        // if (!boardLegal(word)) 
-        //     boardIsEmpty = false;
-        //     if (word.isVertical()){ 
-        //     int j=word.getCol();
-        //     for (int i=word.getRow(); i<word.getTiles().length+word.tiles.length; i++){
-        //         if (tiles[i][j]==null){ 
-        //             tiles[i][j]=word.tiles[i-word.getTiles().length];
-        //         }
-        //     }
-        //     }
-        //     else{
-        //         int i=word.getRow();
-        //         for (int j=word.getCol(); j<word.getCol()+word.tiles.length; j++){
-        //             if (tiles[i][j]==null){
-        //                 tiles[i][j]=word.tiles[j-word.getTiles().length];
-        //             }
-        //         }
-                
-        //     }
-            return -1; // Word placement is not legal
-        }
-    // }
-        // if (!dictionaryLegal(word)) {
-        //     return -1; // Word is not legal according to the dictionary
-        // }
-    
-        // // Calculate the score for the word placement
-        // int score = getScore(word);
-        // System.out.println(score);
-        // // Place the word on the board (implementation details depend on your game logic)
-        // placeWord(word);
-        // return score;
-    // }
-    
+
     // Method to place the word on the board
     // private boolean placeWord(Word word) {
     //     Tile[][] currentTiles = getTiles(); // Get the current state of the board
