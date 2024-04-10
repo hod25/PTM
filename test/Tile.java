@@ -10,14 +10,15 @@ public class Tile {
         this.letter = letter;
         this.score = score;
     }
+
     // Getter for the letter
     public char getLetter() {
         return letter;
     }
     // // Getter for the score
-    // public int getScore() {
-    //     return score;
-    // } 
+    public int getScore() {
+        return score;
+    } 
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -39,17 +40,12 @@ public class Tile {
         private static Bag instance = null;
         private int[] quantities;
         private int[] quantitiesD;
+        private int[] scores;
         private Tile[] tiles;
 
         private Bag() {
-            quantities = new int[]{
-                    9, 2, 2, 4, 12, 2, 3, 2, 9, 1, 1, 4, 2,
-                    6, 8, 2, 1, 6, 4, 6, 4, 2, 2, 1, 2, 1
-            }; // Quantities for each letter A-Z
-            quantitiesD = new int[]{
-                9, 2, 2, 4, 12, 2, 3, 2, 9, 1, 1, 4, 2,
-                6, 8, 2, 1, 6, 4, 6, 4, 2, 2, 1, 2, 1
-        }; // Quantities for each letter A-Z
+            quantities = new int[]{9, 2, 2, 4, 12, 2, 3, 2, 9, 1, 1, 4, 2, 6, 8, 2, 1, 6, 4, 6, 4, 2, 2, 1, 2, 1}; // Quantities for each letter A-Z
+            quantitiesD = new int[]{9, 2, 2, 4, 12, 2, 3, 2, 9, 1, 1, 4, 2, 6, 8, 2, 1, 6, 4, 6, 4, 2, 2, 1, 2, 1}; // Quantities for each letter A-Z
             tiles = new Tile[26];
             for (int i = 0; i < 26; i++) {
                 char letter = (char) ('A' + i);
@@ -65,43 +61,8 @@ public class Tile {
         }
 
         public int getScore(char letter) {
-            switch (Character.toLowerCase(letter)) {
-                case 'a':
-                case 'e':
-                case 'i':
-                case 'n':
-                case 'o':
-                case 'r':
-                case 's':
-                case 't':
-                case 'u':
-                    return 1;
-                case 'd':
-                case 'l':
-                case 'm':
-                case 'g':
-                    return 2;
-                case 'b':
-                case 'c':
-                case 'p':
-                    return 3;
-                case 'f':
-                case 'h':
-                case 'v':
-                case 'w':
-                case 'y':
-                    return 4;
-                case 'k':
-                    return 5;
-                case 'j':
-                case 'x':
-                    return 8;
-                case 'q':
-                case 'z':
-                    return 10;
-                default:
-                    return 0; // Handle characters not in the scoring system (e.g., whitespace)
-            }
+            scores = new int[]{1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10};
+            return scores[letter - 'A'];
                     // return 1; // Default score
         }
 
@@ -131,8 +92,7 @@ public class Tile {
             int index = tile.letter - 'A';
             if (index >= 0 && index < 26 && quantities[index] < quantitiesD[index]) { // Assuming max quantity is 9, change according to your rules
                 quantities[index]++;
-                // System.out.println("Tile " + tile.letter + " is put back to bag");
-                // System.out.println("Quantity of " + tile.letter + " is " + quantities[index]);
+
             }
         }
 
@@ -145,11 +105,6 @@ public class Tile {
         }
 
         public int[] getQuantities() {
-            // int[] copy = new int[quantities.length];
-            // for (int i = 0; i < quantities.length; i++) {
-            //     copy[i] = quantities[i];
-            // }
-            // return copy;
             return quantities.clone();
         }
         

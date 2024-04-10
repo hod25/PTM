@@ -2,7 +2,7 @@ package test;
 import java.util.Arrays;
 import java.util.Objects;
 public class Word {
-    private final Tile[] tiles;
+    final Tile[] tiles;
     private final int row;
     private final int col;
     private final boolean vertical;
