@@ -16,7 +16,7 @@ public class Word {
     }
 
     // Getters
-    public Tile[] getTiles() { return tiles;}
+    public Tile[] getTile() { return tiles;}
 
     public int getRow() { return row;}
 

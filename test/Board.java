@@ -10,11 +10,7 @@ public class Board {
     private static Board instance ; // Singleton instance\
     private static final int BOARD_SIZE = 15; // Assuming a 15x15 board, adjust as needed
     private Tile[][] tiles; // 2D array to hold tiles
-    // boolean isFirstWord = true;
-    // boolean boardIsEmpty = true;
-    // private Tile.Bag bag;
-    // ArrayList<Word> words;
-    // private static Board board = null;
+    boolean isFirst = false;
     private final HashMap<Integer,List<String>> squaresMap;
     private static HashMap<String, String> boardScores;
 
@@ -51,7 +47,7 @@ public class Board {
     public boolean isInBound(Word word) {
         int row = word.getRow();
         int col = word.getCol();
-        int len = word.getTiles().length;
+        int len = word.getTile().length;
         boolean isVertical = word.isVertical();
         if (row >= 0 && row < BOARD_SIZE && col >= 0 && col < BOARD_SIZE) {
             if (isVertical) {
@@ -99,7 +95,7 @@ public class Board {
     public boolean boardLegal(Word word) {
         int row = word.getRow();
         int col = word.getCol();  
-        int len = word.getTiles().length;
+        int len = word.getTile().length;
         boolean isVertical = word.isVertical();
         if (isInBound(word)) {
             if (isVertical) {
@@ -155,14 +151,14 @@ public class Board {
     // Calculate the total score of the word, including bonuses
     public int getScore(Word word) {
         // Implement logic to calculate the score based on word placement
-        Tile[] tiles = word.getTiles();
+        Tile[] tiles = word.getTile();
         int tileScore = 0;
         int scoreSum = 0;
         int multiplyWord = 1;
         //int score = 0;
 
 
-        for (int i=0; i<word.getTiles().length; i++) {
+        for (int i=0; i<word.getTile().length; i++) {
             int row = word.isVertical() ? word.getRow() + i : word.getRow(); 
             int col = word.isVertical() ? word.getCol() : word.getCol() + i; 
             if (tiles[i]==null) {
@@ -198,15 +194,59 @@ public class Board {
                 default:
                     break;
             }
-            // System.out.println(scoreSum);
         }
-    
         return scoreSum*multiplyWord;
-    
-        // return 0; // Placeholder, replace with actual logic
-        
     }
     
+    public int getScore2(Word word) {
+        // Implement logic to calculate the score based on word placement
+        Tile[] tiles = word.getTile();
+        int tileScore = 0;
+        int scoreSum = 0;
+        int multiplyWord = 1;
+        //int score = 0;
+
+
+        for (int i=0; i<word.getTile().length; i++) {
+            int row = word.isVertical() ? word.getRow() + i : word.getRow(); 
+            int col = word.isVertical() ? word.getCol() : word.getCol() + i; 
+            if (tiles[i]==null) {
+                    Board board = getBoard();
+                    if (board != null && board.tiles[row][col] != null) {
+                        tileScore = board.tiles[row][col].score;
+                    } else {
+                        // Handle the case where the board or tile is null
+                    }                    scoreSum += tileScore;
+                    continue;
+                }    
+            else{
+                tileScore = tiles[i].score;
+            }
+            switch (getTileMultiplier(row, col)) {
+                case 0:
+                    scoreSum += tileScore;
+                    break;
+                case 1:// Double Letter
+                    scoreSum += tileScore * 3;
+                    break;
+                case 2:// Double Word
+                    scoreSum += tileScore;
+                    multiplyWord *= 1;
+                    break;
+                case 3:// Triple Word
+                    scoreSum += tileScore;
+                    multiplyWord *= 1;
+                    break;
+                case 4:// Double Letter
+                    scoreSum += tileScore * 2;
+                    break;
+                default:
+                    break;
+            }
+        }
+        return scoreSum*multiplyWord;
+    }
+
         // Method to get the bonus multiplier for each tile position
     private int getTileMultiplier(int row, int col) {
         if ((row == 0 && col == 0) || (row == 14 && col == 0) || (row == 7 && (col == 0 || col == 14))
@@ -256,13 +296,20 @@ public class Board {
         if (!dictionaryLegal(word)) {
             return -1; // Word is not legal according to the dictionary
         }
-    
+        isFirst=false;
         // Calculate the score for the word placement
-        ArrayList<Word> newWords=getWords(word);
+        ArrayList<Word> newWords = getWords(word);
         for (Word w : newWords) {
-            score+= getScore(w);
+            if (!isFirst) {
+                score += getScore(w);
+                isFirst = true;
+            }
+            else if (isFirst) {
+            score += getScore2(w);
+            System.out.println(score);
+            }
         }
-        System.out.println(score);
+        // System.out.println(score);
         // Place the word on the board (implementation details depend on your game logic)
         // placeWord(word);
         return score;
@@ -273,49 +320,51 @@ public class Board {
             newWords.add(word);
             int row = word.getRow();
             int col = word.getCol();
-            int len = word.getTiles().length;
+            int len = word.getTile().length;
             if (word.isVertical()) {
  
                 for (int i = row; i < len; i++) {
                     if (tiles[row+i][col] != null) {
                         // Check if a new word is created horizontally
                         int j = col;
-                        while (j >= 0 && tiles[row+i][j] != null) {
+                        while (j >= 0 && tiles[i][j] != null) {
                             j--;
                         }
                         j++;
                         int start = j;
-                        while (j < BOARD_SIZE && tiles[row+i][j] != null) {
+                        while (j < BOARD_SIZE && tiles[i][j] != null) {
                             j++;
                         }
                         if (j - start > 1) {
                             Tile[] newTiles = new Tile[j - start];
                             for (int k = start; k < j; k++) {
-                                newTiles[k - start] = tiles[row+i][k];
+                                newTiles[k - start] = tiles[i][k];
                             }
-                            newWords.add(new Word(newTiles, row+i, start, false));
+                            newWords.add(new Word(newTiles, i, start, false));
+                            System.out.println("add");
                         }
                     }
                 }
             } else {
-                for (int i = col; i < len; i++) {
-                    if (tiles[row][col+i] != null) {
+                for (int i = col; i < len+col; i++) {
+                    if (tiles[row][i] != null) {
                         // Check if a new word is created vertically
                         int j = row;
-                        while (j >= 0 && tiles[j][col+i] != null) {
+                        while (j >= 0 && tiles[j][i] != null) {
                             j--;
                         }
                         j++;
                         int start = j;
-                        while (j < BOARD_SIZE && tiles[j][col+i] != null) {
+                        while (j < BOARD_SIZE && tiles[j][i] != null) {
                             j++;
                         }
                         if (j - start > 1) {
                             Tile[] newTiles = new Tile[j - start];
                             for (int k = start; k < j; k++) {
-                                newTiles[k - start] = tiles[k][col+i];
+                                newTiles[k - start] = tiles[k][i];
                             }
-                            newWords.add(new Word(newTiles, start, col+i, true));
+                            newWords.add(new Word(newTiles, start, i, true));
+                            // System.out.println(newWords.add(new Word(newTiles, start, i, true)));
                         }
                     }
                 }
