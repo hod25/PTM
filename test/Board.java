@@ -10,8 +10,8 @@ public class Board {
     private static Board instance ; // Singleton instance\
     private static final int BOARD_SIZE = 15; // Assuming a 15x15 board, adjust as needed
     private Tile[][] tiles; // 2D array to hold tiles
-    boolean isFirstWord = true;
-    boolean boardIsEmpty = true;
+    // boolean isFirstWord = true;
+    // boolean boardIsEmpty = true;
     // private Tile.Bag bag;
     // ArrayList<Word> words;
     // private static Board board = null;
@@ -62,6 +62,40 @@ public class Board {
         }
         return false;
     }
+
+    // public boolean boardLegal(Word word) {
+    //     int row = word.getRow();
+    //     int col = word.getCol();  
+    //     int len = word.getTiles().length;
+    //     boolean isVertical = word.isVertical();
+    //     if (isInBound(word)) {
+    //         if (isVertical) {
+    //             if (col == 7 && row <= 7 && row+len >= 7) {
+    //                 return true;
+    //             }
+                
+    //         }
+    //         else if (row == 7 && col <= 7 && col+len >= 7) {
+    //             return true;
+                
+    //         }
+    //         else if (isInBound(word))
+    //             if(isVertical)
+    //                 for (int i = row; i < len; i++) {
+    //                     if (tiles[row+i][col] != null) {
+    //                         return true;
+    //                     }
+    //                 }
+    //         else
+    //             for (int i = col; i < len; i++) {
+    //                 if (tiles[row][col+i] != null) {
+    //                     return true;
+    //                 }
+    //             }
+    //     }  
+    //     return false;
+    // }    
+    
     public boolean boardLegal(Word word) {
         int row = word.getRow();
         int col = word.getCol();  
@@ -77,6 +111,11 @@ public class Board {
                         return true;
                     }
                 }
+                for (int i = col; i < len+row; i++){
+                    if ((tiles[i][col+1] != null)||(tiles[i][col-1] != null)) {
+                        return true;
+                    }
+                }
             }
             else{ 
                 if (row == 7 && col <= 7 && col+len >= 7) {
@@ -84,6 +123,11 @@ public class Board {
                 }
                 for (int i = col; i < len; i++) {
                     if (tiles[row][col+i] != null) {
+                        return true;
+                    }
+                }
+                for (int i = col; i < len+col; i++){
+                    if ((tiles[row-1][i] != null)||(tiles[row+1][i] != null)) {
                         return true;
                     }
                 }
@@ -190,11 +234,12 @@ public class Board {
         int score=0;
         if (!boardLegal(word)) 
             // boardIsEmpty = false;
+            System.out.println("board is not Legal ");
             if (word.isVertical()){ 
             int j=word.getCol();
-            for (int i=word.getRow(); i<word.getTiles().length+word.tiles.length; i++){
+            for (int i=word.getRow(); i<word.getRow()+word.tiles.length; i++){
                 if (tiles[i][j]==null){ 
-                    tiles[i][j]=word.tiles[i-word.getTiles().length];
+                    tiles[i][j]=word.tiles[i-word.getRow()];
                 }
             }
             }
