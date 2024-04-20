@@ -62,22 +62,6 @@ public class Board {
         }
         return false;
     }
-    // public boolean middle(Word word) {
-    //     final int wordSize=word.tiles.length;
-    //     if ((word.getRow()<0)||(word.getCol()<0)) {
-    //         return false;
-    //     }
-    //     else if (word.isVertical()) {
-    //         return ((word.getRow()<=7)&&(word.getRow()+wordSize>=7)) {
-    //         }
-    //     }
-    //     else {
-    //         return ((word.getCol()<=7)&&(word.getCol()+wordSize>=7)) {
-    //         }
-    //     }
-    
-    // }
-    // Check if the word placement is legal on the board
     public boolean boardLegal(Word word) {
         int row = word.getRow();
         int col = word.getCol();  
@@ -88,52 +72,41 @@ public class Board {
                 if (col == 7 && row <= 7 && row+len >= 7) {
                     return true;
                 }
-                
-            }
-            else if (row == 7 && col <= 7 && col+len >= 7) {
-                return true;
-                
-            }
-            else if (isInBound(word))
-                if(isVertical)
-                    for (int i = row; i < len; i++) {
-                        if (tiles[row+i][col] != null) {
-                            return true;
-                        }
+                for (int i = row; i < len; i++) {
+                    if (tiles[row+i][col] != null) {
+                        return true;
                     }
-            else
+                }
+            }
+            else{ 
+                if (row == 7 && col <= 7 && col+len >= 7) {
+                    return true;
+                }
                 for (int i = col; i < len; i++) {
                     if (tiles[row][col+i] != null) {
                         return true;
                     }
                 }
+            }
+            // else //if (isInBound(word))
+            //     if(isVertical)
+            //         for (int i = row; i < len; i++) {
+            //             if (tiles[row+i][col] != null) {
+            //                 return true;
+            //             }
+            //         }
+            // else
+            //     for (int i = col; i < len; i++) {
+            //         if (tiles[row][col+i] != null) {
+            //             return true;
+            //         }
+            //     }
         }  
-        // // Check if the word fits inside the board
-        // if (!isInsideBoard(word)) {
-        //     return false;
-        // }    
-        // // Check if it rests on existing tiles
-        // if (!restsOnExistingTiles(word)) {//    error always returns false
-        //     return false;
-        // }
-    
-        // // // Check if it requires replacement of existing tiles
-        // // if (requiresReplacement(word)) {
-        // //     return false;
-        // // }
         return false;
     }    
 
     // Check if the word is legal according to the game dictionary
     public boolean dictionaryLegal(Word word) {return true;}// For now, always return true
-
-    // Get an array of all new words that will be created by placing the given word
-    public ArrayList<Word> getWords(Word word) {
-        ArrayList<Word> newWords = new ArrayList<>();
-        newWords.add(word);
-        // Implement logic to find new words created by placing the given word
-        return newWords;
-    }
 
     // Calculate the total score of the word, including bonuses
     public int getScore(Word word) {
@@ -181,7 +154,7 @@ public class Board {
                 default:
                     break;
             }
-            System.out.println(scoreSum);
+            // System.out.println(scoreSum);
         }
     
         return scoreSum*multiplyWord;
@@ -214,8 +187,9 @@ public class Board {
         }
     }
     public int tryPlaceWord(Word word) {
+        int score=0;
         if (!boardLegal(word)) 
-            boardIsEmpty = false;
+            // boardIsEmpty = false;
             if (word.isVertical()){ 
             int j=word.getCol();
             for (int i=word.getRow(); i<word.getTiles().length+word.tiles.length; i++){
@@ -239,11 +213,69 @@ public class Board {
         }
     
         // Calculate the score for the word placement
-        getWords(word);
-        int score = getScore(word);
+        ArrayList<Word> newWords=getWords(word);
+        for (Word w : newWords) {
+            score+= getScore(w);
+        }
         System.out.println(score);
         // Place the word on the board (implementation details depend on your game logic)
         // placeWord(word);
         return score;
     }
+        // Get an array of all new words that will be created by placing the given word
+        public ArrayList<Word> getWords(Word word) {
+            ArrayList<Word> newWords = new ArrayList<>();
+            newWords.add(word);
+            int row = word.getRow();
+            int col = word.getCol();
+            int len = word.getTiles().length;
+            if (word.isVertical()) {
+ 
+                for (int i = row; i < len; i++) {
+                    if (tiles[row+i][col] != null) {
+                        // Check if a new word is created horizontally
+                        int j = col;
+                        while (j >= 0 && tiles[row+i][j] != null) {
+                            j--;
+                        }
+                        j++;
+                        int start = j;
+                        while (j < BOARD_SIZE && tiles[row+i][j] != null) {
+                            j++;
+                        }
+                        if (j - start > 1) {
+                            Tile[] newTiles = new Tile[j - start];
+                            for (int k = start; k < j; k++) {
+                                newTiles[k - start] = tiles[row+i][k];
+                            }
+                            newWords.add(new Word(newTiles, row+i, start, false));
+                        }
+                    }
+                }
+            } else {
+                for (int i = col; i < len; i++) {
+                    if (tiles[row][col+i] != null) {
+                        // Check if a new word is created vertically
+                        int j = row;
+                        while (j >= 0 && tiles[j][col+i] != null) {
+                            j--;
+                        }
+                        j++;
+                        int start = j;
+                        while (j < BOARD_SIZE && tiles[j][col+i] != null) {
+                            j++;
+                        }
+                        if (j - start > 1) {
+                            Tile[] newTiles = new Tile[j - start];
+                            for (int k = start; k < j; k++) {
+                                newTiles[k - start] = tiles[k][col+i];
+                            }
+                            newWords.add(new Word(newTiles, start, col+i, true));
+                        }
+                    }
+                }
+            }
+            // Implement logic to find new words created by placing the given word
+            return newWords;
+        }
     }
