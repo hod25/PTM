@@ -151,7 +151,6 @@ public class Board {
         return scoreSum*multiplyWord;
     }
     
-
         // Method to get the bonus multiplier for each tile position
     private int getTileMultiplier(int row, int col) {
         if ((row == 0 && col == 0) || (row == 14 && col == 0) || (row == 7 && (col == 0 || col == 14))
@@ -199,8 +198,7 @@ public class Board {
                     if (tiles[i][j]==null){
                         tiles[i][j]=word.tiles[j-word.getCol()];
                     }
-                }
-                
+                }  
         }
         if (!dictionaryLegal(word)) {
             return -1; // Word is not legal according to the dictionary
@@ -212,19 +210,6 @@ public class Board {
             score += getScore(w);
             // System.out.println(score);
             }
-        // for (Word w : newWords) {
-        //     if (!isFirst) {
-        //         score += getScore(w);
-        //         isFirst = true;
-        //     }
-        //     else if (isFirst) {
-        //     score += getScore(w);
-        //     System.out.println(score);
-        //     }
-        // }
-        // System.out.println(score);
-        // Place the word on the board (implementation details depend on your game logic)
-        // placeWord(word);
         return score;
     }
         // Get an array of all new words that will be created by placing the given word
@@ -234,9 +219,6 @@ public class Board {
             int row = word.getRow();
             int col = word.getCol();
             int len = word.getTile().length;
-            // if (word.getTile()[word.getCol()] == null)  {
-            //     col++;
-            // }
             if (word.isVertical()) {
                 for (int i = row; i < len; i++) {
                     if ((tiles[i][col] != null)&&(word.tiles[i-row]!=null)) {
