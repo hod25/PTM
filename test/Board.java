@@ -11,8 +11,9 @@ public class Board {
     private static final int BOARD_SIZE = 15; // Assuming a 15x15 board, adjust as needed
     private Tile[][] tiles; // 2D array to hold tiles
     boolean isFirst = false;
+    boolean isFirstWord = true; //only for the star tile
     private final HashMap<Integer,List<String>> squaresMap;
-    private static HashMap<String, String> boardScores;
+    // private static HashMap<String, String> boardScores;
 
     private Board() {
         // Initialize the board with null tiles
@@ -191,6 +192,10 @@ public class Board {
                 case 4:// Double Letter
                     scoreSum += tileScore * 2;
                     break;
+                case 5:// Double Word
+                    scoreSum += tileScore;
+                    multiplyWord *= 2;
+                    break;
                 default:
                     break;
             }
@@ -231,11 +236,11 @@ public class Board {
                     break;
                 case 2:// Double Word
                     scoreSum += tileScore;
-                    multiplyWord *= 1;
+                    // multiplyWord *= 2;
                     break;
                 case 3:// Triple Word
                     scoreSum += tileScore;
-                    multiplyWord *= 1;
+                    // multiplyWord *= 3;
                     break;
                 case 4:// Double Letter
                     scoreSum += tileScore * 2;
@@ -255,8 +260,7 @@ public class Board {
         } else if ((row == 1 && col == 1) || (row == 2 && col == 2) || (row == 3 && col == 3) || (row == 4 && col == 4)
         || (row == 1 && col == 13) || (row == 2 && col == 12) || (row == 3 && col == 11) || (row == 4 && col == 10)
         || (row == 13 && col == 1) || (row == 12 && col == 2) || (row == 11 && col == 3) || (row == 10 && col == 4)
-        || (row == 10 && col == 10) || (row == 11 && col == 11) || (row == 12 && col == 12) || (row == 13 && col == 13)
-        || (row == 7 && col == 7)) {
+        || (row == 10 && col == 10) || (row == 11 && col == 11) || (row == 12 && col == 12) || (row == 13 && col == 13)) {
         return 2; // Double Word
         } else if ((row == 1 && (col == 5 || col == 9)) || (row == 5 && (col == 1 || col == 5 || col == 9 || col == 13))
         || (row == 9 && (col == 1 || col == 5 || col == 9 || col == 13)) || (row == 13 && (col == 5 || col == 9))) {
@@ -265,7 +269,10 @@ public class Board {
         || (row == 0 && col == 11) || (row == 2 && (col == 6 || col == 8)) || (row == 6 && (col == 2 || col == 6 || col == 8 || col == 12))
         || (row == 7 && (col == 3 || col == 12)) || (row == 8 && (col == 2 || col == 6 || col == 8 || col == 12))
         || (row == 11 && (col == 0 || col == 7 || col == 14)) || (row == 12 && (col == 6 || col == 8)) || (row == 14 && (col == 3 || col == 11))) {
-        return 4; // Double Letter    
+        return 4; // Double Letter   
+        }else if ((row == 7 && col == 7)&&(isFirstWord)){
+            isFirstWord = false;
+             return 5; // Star Letter  
         } else {
             return 0; // No Bonus
         }
@@ -305,7 +312,7 @@ public class Board {
                 isFirst = true;
             }
             else if (isFirst) {
-            score += getScore2(w);
+            score += getScore(w);
             System.out.println(score);
             }
         }
@@ -341,7 +348,6 @@ public class Board {
                                 newTiles[k - start] = tiles[i][k];
                             }
                             newWords.add(new Word(newTiles, i, start, false));
-                            System.out.println("add");
                         }
                     }
                 }
