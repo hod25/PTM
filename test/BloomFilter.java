@@ -32,9 +32,11 @@ public class BloomFilter {
          {
             byte[] digest = md.digest(element.getBytes());
             int index = Math.abs(new String(digest).hashCode()) % bitSet.size();
+            // System.out.println("bitset: " + bitSet.size());
             bitSet.set(index, true);
-            System.out.println("Added element: " + element + " to index: " + index);
+            // System.out.println("Added element: " + element + " to index: " + index);
         }
+        System.out.println(bitSet.toString());
     }
 
     public boolean contains(String word) {
@@ -63,5 +65,17 @@ public class BloomFilter {
         }
         System.out.println("BitSet: " + sb.toString());
         return sb.toString();
+    }
+
+    public BitSet fromString(String bitString) {
+        BitSet bitSet = new BitSet(bitString.length());
+        for (int i = 0; i < bitString.length(); i++) {
+            if (bitString.charAt(i) == '1') {
+                bitSet.set(i);
+            } else if (bitString.charAt(i) != '0') {
+                throw new IllegalArgumentException("Invalid character in bit string: " + bitString.charAt(i));
+            }
+        }
+        return bitSet;
     }
 }
