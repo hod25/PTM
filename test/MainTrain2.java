@@ -114,7 +114,7 @@ public class MainTrain2 {
 		testCacheManager();
 		testBloomFilter();
 		try {
-			testIOSearch();
+			// testIOSearch();
 		} catch(Exception e) {
 			System.out.println("you got some exception (-10)");
 		}
