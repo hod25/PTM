@@ -27,17 +27,39 @@ public class BloomFilter {
         }
     }
 
-    public void add(String element) {
-        for (MessageDigest md : hashFunctions)
-         {
-            byte[] digest = md.digest(element.getBytes());
-            int index = Math.abs(new String(digest).hashCode()) % bitSet.size();
-            // System.out.println("bitset: " + bitSet.size());
-            bitSet.set(index, true);
-            // System.out.println("Added element: " + element + " to index: " + index);
+    // public void add(String element) 
+    // {
+    //     for (MessageDigest md : hashFunctions)
+    //      {
+    //         byte[] digest = md.digest(element.getBytes());
+    //         int index = Math.abs(new String(digest).hashCode()) % bitSet.size();
+    //         // System.out.println("bitset: " + bitSet.size());
+    //         bitSet.set(index, true);
+    //         // System.out.println("Added element: " + element + " to index: " + index);
+    //     }
+    //     // System.out.println(bitSet.toString());
+    // }
+    
+    void add(String word)
+    {
+        for(String s : algorithms)
+            {
+                MessageDigest md;
+                try {
+                    md = MessageDigest.getInstance(s);
+                } catch (NoSuchAlgorithmException e) {
+                    throw new RuntimeException(e);
+                }
+                md.reset();
+                md.update(word.getBytes());
+                byte[] digest = md.digest();
+                BigInteger bi = new BigInteger(1, (digest));
+                int k = bi.intValue();
+                int index = Math.abs(k) % bitSet.size();
+                bitSet.set(index);
+            }
+                    // System.out.println(bitSet.toString());
         }
-        // System.out.println(bitSet.toString());
-    }
 
     public boolean contains(String word) {
         for (String algorithm : algorithms) {
@@ -63,19 +85,7 @@ public class BloomFilter {
             sb.append(bitSet.get(i) ? "1" : "0");
             // System.out.println("Bit at index " + i + " is " + (bitSet.get(i) ? "1" : "0"));
         }
-        System.out.println("BitSet: " + sb.toString());
+        // System.out.println("BitSet: " + sb.toString());
         return sb.toString();
     }
-
-    // public BitSet fromString(String bitString) {
-    //     BitSet bitSet = new BitSet(bitString.length());
-    //     for (int i = 0; i < bitString.length(); i++) {
-    //         if (bitString.charAt(i) == '1') {
-    //             bitSet.set(i);
-    //         } else if (bitString.charAt(i) != '0') {
-    //             throw new IllegalArgumentException("Invalid character in bit string: " + bitString.charAt(i));
-    //         }
-    //     }
-    //     return bitSet;
-    // }
 }
