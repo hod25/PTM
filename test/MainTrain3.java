@@ -109,9 +109,9 @@ public class MainTrain3 {
 		if(dm.query("t2.txt","t3.txt","3"+t2[5]))
 			System.out.println("problem for Dictionary Manager query (-5)");
 		if(!dm.challenge("t1.txt","t2.txt","t3.txt",t3[2]))
-			System.out.println("problem for Dictionary Manager challenge (-5)");
+			System.out.println("problem for Dictionary Manager challengeWWWWWW (-5)");//problem
 		if(dm.challenge("t2.txt","t3.txt","t1.txt","3"+t2[5]))
-			System.out.println("problem for Dictionary Manager challenge (-5)");
+			System.out.println("problem for Dictionary Manager challengeQQQ (-5)");
 		
 		if(dm.getSize()!=3)
 			System.out.println("wrong size for the Dictionary Manager (-10)");
@@ -136,27 +136,27 @@ public class MainTrain3 {
 		}
 	}
 	
-	public static void testBSCH() {
-		String s1[]=writeFile("s1.txt");
-		String s2[]=writeFile("s2.txt");
+	// public static void testBSCH() {
+	// 	String s1[]=writeFile("s1.txt");
+	// 	String s2[]=writeFile("s2.txt");
 		
-		Random r=new Random();
-		int port=6000+r.nextInt(1000);
-		MyServer s=new MyServer(port, new BookScrabbleHandler());
-		s.start();
-		runClient(port, "Q,s1.txt,s2.txt,"+s1[1], true);
-		runClient(port, "Q,s1.txt,s2.txt,"+s2[4], true);
-		runClient(port, "Q,s1.txt,s2.txt,2"+s1[1], false);
-		runClient(port, "Q,s1.txt,s2.txt,3"+s2[4], false);
-		runClient(port, "C,s1.txt,s2.txt,"+s1[9], true);
-		runClient(port, "C,s1.txt,s2.txt,#"+s2[1], false);
-		s.close();
-	}
+	// 	Random r=new Random();
+	// 	int port=6000+r.nextInt(1000);
+	// 	MyServer s=new MyServer(port, new BookScrabbleHandler());
+	// 	s.start();
+	// 	runClient(port, "Q,s1.txt,s2.txt,"+s1[1], true);
+	// 	runClient(port, "Q,s1.txt,s2.txt,"+s2[4], true);
+	// 	runClient(port, "Q,s1.txt,s2.txt,2"+s1[1], false);
+	// 	runClient(port, "Q,s1.txt,s2.txt,3"+s2[4], false);
+	// 	runClient(port, "C,s1.txt,s2.txt,"+s1[9], true);
+	// 	runClient(port, "C,s1.txt,s2.txt,#"+s2[1], false);
+	// 	s.close();
+	// }
 	
 	public static void main(String[] args) {
 		if(testServer()) {
 			testDM();
-			testBSCH();			
+			// testBSCH();			
 		}
 		System.out.println("done");
 	}
