@@ -27,19 +27,6 @@ public class BloomFilter {
         }
     }
 
-    // public void add(String element) 
-    // {
-    //     for (MessageDigest md : hashFunctions)
-    //      {
-    //         byte[] digest = md.digest(element.getBytes());
-    //         int index = Math.abs(new String(digest).hashCode()) % bitSet.size();
-    //         // System.out.println("bitset: " + bitSet.size());
-    //         bitSet.set(index, true);
-    //         // System.out.println("Added element: " + element + " to index: " + index);
-    //     }
-    //     // System.out.println(bitSet.toString());
-    // }
-    
     void add(String word)
     {
         for(String s : algorithms)
