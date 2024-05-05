@@ -7,15 +7,11 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Arrays;
 import java.util.List;
+import test.DictionaryManager;
 // public class BookScrabbleHandler {
 
 
-public class BookScrabbleHandler {
-    private final DictionaryManager dictionaryManager;
-
-    public BookScrabbleHandler(DictionaryManager dictionaryManager) {
-        this.dictionaryManager = dictionaryManager;
-    }
+public class BookScrabbleHandler implements ClientHandler {
 
     public void handleClient(Socket clientSocket) {
         try (
@@ -25,17 +21,16 @@ public class BookScrabbleHandler {
             String inputLine = reader.readLine();
             if (inputLine != null) {
                 String[] parts = inputLine.split(",");
-                if (parts.length >= 2) {
                     String queryType = parts[0];
                     String[] words = parts[1].split(",");
                     if (queryType.equals("Q")) {
-                        // String queryWord = words[words.length - 1].trim();
-                        // boolean result = dictionaryManager.contains(queryWord);
-                        // writer.println(result + "-1");
+                        String queryWord = words[words.length - 1].trim();
+                        DictionaryManager dictionaryManager = new DictionaryManager();
+                        boolean result = dictionaryManager.query(queryWord);
+                        writer.println(result + "-1");
                     } else if (queryType.equals("C")) {
                         // Handle challenge
                         // This part is not implemented as it's not clear what the challenge is
-                        
                         writer.println("Challenge not implemented.");
                     } else {
                         writer.println("Invalid query type.");
@@ -44,8 +39,11 @@ public class BookScrabbleHandler {
                     writer.println("Invalid input format.");
                 }
             }
-        } catch (IOException e) {
+        catch (IOException e) {
             System.err.println("Error handling client: " + e.getMessage());
         }
+    }
+    public void close() {
+        // Implementation of the close() method.
     }
 }
