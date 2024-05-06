@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.util.Arrays;
 public class DictionaryManager {
     private static DictionaryManager instance;
-    // private Dictionary dictionary;  
-    // private String map;
     private Map<String, Dictionary> DictionaryMap = new HashMap<>();
 
 
@@ -58,24 +56,4 @@ public class DictionaryManager {
         return result;
         
     }
-
-    //     public boolean challenge(String... args) {
-    //     String challengeWord = args[args.length - 1];
-    //     boolean result = false;
-        
-    //     for (int i = 0; i < args.length - 1; i++) {
-    //         String book = args[i];
-    //         Dictionary dictionary = DictionaryMap.get(book);
-    //         if (!DictionaryMap.containsKey(book)) 
-    //             DictionaryMap.put(book, new Dictionary(book));
-    //     }
-    //     for (String book : args) {
-    //         // String book = args[i];
-    //         // Dictionary key = DictionaryMap.get(book);
-    //         if (IOSearcher.search(challengeWord, book))
-    //             result=true; 
-    //     }  
-    //     return result;
-        
-    // }
 }

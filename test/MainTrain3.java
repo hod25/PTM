@@ -128,6 +128,7 @@ public class MainTrain3 {
 			String res=in.next();
 			if((result && !res.equals("true")) || (!result && !res.equals("false")))
 				System.out.println("problem getting the right answer from the server (-10)");
+				// System.out.println(query+" "+res+" "+result); //debug
 			in.close();
 			out.close();
 			server.close();
@@ -144,12 +145,12 @@ public class MainTrain3 {
 		int port=6000+r.nextInt(1000);
 		MyServer s=new MyServer(port, new BookScrabbleHandler());
 		s.start();
-		runClient(port, "Q,s1.txt,s2.txt,"+s1[1], true); //F
-		runClient(port, "Q,s1.txt,s2.txt,"+s2[4], true); //F
-		runClient(port, "Q,s1.txt,s2.txt,2"+s1[1], false); //T
-		runClient(port, "Q,s1.txt,s2.txt,3"+s2[4], false); //T
-		runClient(port, "C,s1.txt,s2.txt,"+s1[9], true); //F
-		runClient(port, "C,s1.txt,s2.txt,#"+s2[1], false); //T
+		runClient(port, "Q,s1.txt,s2.txt,"+s1[1], true); //T
+		runClient(port, "Q,s1.txt,s2.txt,"+s2[4], true); //T
+		runClient(port, "Q,s1.txt,s2.txt,2"+s1[1], false); //F
+		runClient(port, "Q,s1.txt,s2.txt,3"+s2[4], false); //F
+		runClient(port, "C,s1.txt,s2.txt,"+s1[9], true); //T
+		runClient(port, "C,s1.txt,s2.txt,#"+s2[1], false); //F
 		s.close();
 	}
 	
