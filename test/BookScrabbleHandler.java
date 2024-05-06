@@ -6,14 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.Arrays;
-import java.util.List;
-import test.DictionaryManager;
-
-
-
-
 public class BookScrabbleHandler implements ClientHandler {
     public void handleClient(InputStream input, OutputStream output) {
         boolean result = false;
@@ -29,12 +22,10 @@ public class BookScrabbleHandler implements ClientHandler {
                 String[] subsetOfBooks = Arrays.copyOfRange(parts, 1, parts.length);
                 if (queryType.equals("Q")) {
                     DictionaryManager dictionaryManager = new DictionaryManager();
-                    if(dictionaryManager.query(subsetOfBooks)) 
-                        result = true;
+                    if(dictionaryManager.query(subsetOfBooks)) result = true;
                 } else if (queryType.equals("C")) {
                     DictionaryManager dictionaryManager = new DictionaryManager();
-                    if(dictionaryManager.challenge(subsetOfBooks))
-                        result = true;
+                    if(dictionaryManager.challenge(subsetOfBooks)) result = true;
             }
         }
             writer.println(String.valueOf(result));
@@ -43,7 +34,6 @@ public class BookScrabbleHandler implements ClientHandler {
             System.err.println("Error handling client: " + e.getMessage());
         }
     }
-
     @Override
     public void close() {}
 }
