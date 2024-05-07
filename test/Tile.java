@@ -15,7 +15,6 @@ public class Tile {
     public char getLetter() {
         return letter;
     }
-    // // Getter for the score
     public int getScore() {
         return score;
     } 
