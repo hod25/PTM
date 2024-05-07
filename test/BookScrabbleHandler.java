@@ -15,7 +15,7 @@ public class BookScrabbleHandler implements ClientHandler {
             PrintWriter writer = new PrintWriter(output, true)
         ) {
             String inputLine = reader.readLine();
-            System.out.println(inputLine);
+            // System.out.println(inputLine);
             if (inputLine != null) {
                 String[] parts = inputLine.split(",");
                 String queryType = parts[0];

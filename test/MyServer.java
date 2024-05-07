@@ -17,18 +17,18 @@ public class MyServer {
     }    
 	public void start() {
         if (isRunning) {
-            System.out.println("Server is already running");
+            // System.out.println("Server is already running");
             return;
         }
         isRunning = true;
         new Thread(() -> {
             try {
                 serverSocket = new ServerSocket(port);
-                System.out.println("Server started on port " + port);
+                // System.out.println("Server started on port " + port);
 
                 while (isRunning) {
                     Socket clientSocket = serverSocket.accept();
-                    System.out.println("Client connected: " + clientSocket);
+                    // System.out.println("Client connected: " + clientSocket);
 
                     // Handle client connection using the provided ClientHandler
                     clientHandler.handleClient(clientSocket.getInputStream(), clientSocket.getOutputStream());
@@ -38,7 +38,7 @@ public class MyServer {
                 }
             } catch (IOException e) {
                 if (isRunning) {
-                    System.err.println("Error in the server: " + e.getMessage());
+                    // System.err.println("Error in the server: " + e.getMessage());
                 }
             } finally {
                 if (serverSocket != null && !serverSocket.isClosed()) {
@@ -57,7 +57,7 @@ public class MyServer {
         try {
             if (serverSocket != null && !serverSocket.isClosed()) {
                 serverSocket.close();
-                System.out.println("Server closed");
+                // System.out.println("Server closed");
             }
         } catch (IOException e) {
             System.err.println("Error while closing server socket: " + e.getMessage());
